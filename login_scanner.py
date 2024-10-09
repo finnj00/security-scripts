@@ -10,11 +10,10 @@ def scan_login(filename):
         for line in logs:
             match = re.search(r'Failed password for (invalid user )?(.*)from (\d+.\d+.\d+.\d+) port (\d+)', line)
             if match:
-                print(match.group())
-                print(match.group(2))
-                print(match.group(3))
-                print(match.group(4))
+                failedAttempts[match.group(3)] += 1
             pass
+        for ip in failedAttempts.keys():
+            print(f'{ip} failed to login {failedAttempts[ip]} times')
 
 def main():
     parser = argparse.ArgumentParser(description='Script to check log files and  report any suspicious login attempts (more than 10 failed)')
